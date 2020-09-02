@@ -2,22 +2,22 @@ import numpy as np
 import time
 from math import tan , pi 
 
-def time_it(func_1 , *args ,  repitation = 6 , **kwargs ):
+def time_it(func_1 , *args ,  repetitions = 6 , **kwargs ):
 #     start_time = time.time()
     # print("args:", args)
     # print("kwargs:",kwargs)
     t = []
     r = []
-    for i in range(repitation):
+    for i in range(repetitions):
         start_time = time.time()
         ret = func_1(args ,kwargs )
-        print(ret)
+        # print(ret)
         end_time = time.time()
         t.append(end_time - start_time)
         r.append(ret)
-        
-    print(f'Time taken to ececute the given function {repitation} times = {end_time - start_time}, seconds')	
-    return ret
+    avg_time = (np.mean(t))
+    # print(f'Time taken to ececute the given function {repetitions} times = {(t/repetitions)}, seconds')	
+    return r,avg_time
 
 
 def print_1(args  ,kwargs):
@@ -41,7 +41,7 @@ def squared_power_list(args, kwargs ):
     if start <0  or end < 0:
         raise ValueError("Input value should be greater than zero ")
     lis = []
-    for i in range(start, end):
+    for i in range(start, end+1):
         a = n**i
         lis.append(a)
     return lis
@@ -54,15 +54,21 @@ def polygon_area(args,kwargs):
     sides = kwargs['sides']
     if sides < 3:
         raise ValueError("Number of sides should be greater than two.")
-    area = (sides * length**2 )/(4 *tan(pi/sides))
-    return area
+    area = round(sides * length**2 )/(4 *tan(pi/sides))
+    return (int(area))
 
 
 def temp_converter(args , kwargs):
-    c = args[0]
+    t = args[0]
     temp_given_in = kwargs['temp_given_in']
-    f = (c *(9/5)) + 32
-    return f
+    if temp_given_in == "f":
+        c = ((t - 32) * (5/9))
+    elif temp_given_in == "k":
+        c = t - 273.15
+    else :
+        raise ValueError("The input should be kelvin or farenheit ")
+    return (round(c))
+
 
 def speed_converter(args , kwargs):
     kmph = args[0]
